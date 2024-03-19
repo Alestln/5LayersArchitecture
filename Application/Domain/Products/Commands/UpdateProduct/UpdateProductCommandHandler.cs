@@ -3,22 +3,15 @@ using Core.Domain.Products.Models;
 using Core.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Infrastructure;
 
 namespace Application.Domain.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
+public class UpdateProductCommandHandler(StoreDbContext storeDbContext) : IRequestHandler<UpdateProductCommand>
 {
-    private readonly StoreDbContext _storeDbContext;
-
-    public UpdateProductCommandHandler(StoreDbContext storeDbContext)
-    {
-        _storeDbContext = storeDbContext;
-    }
-
     public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _storeDbContext.Products
+        var product = await storeDbContext.Products
                           .SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken)
                       ?? throw new NotFoundException($"{nameof(Product)} with id: '{request.Id}' was not found.");
 
@@ -27,6 +20,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
             request.Price);
         
         product.Update(data);
-        await _storeDbContext.SaveChangesAsync(cancellationToken);
+        await storeDbContext.SaveChangesAsync(cancellationToken);
     }
 }

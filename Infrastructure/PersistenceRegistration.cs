@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Persistence;
+namespace Infrastructure;
 
 public static class PersistenceRegistration
 {

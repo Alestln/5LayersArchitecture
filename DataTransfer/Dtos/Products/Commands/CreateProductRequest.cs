@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Dtos.Products.Commands;
+﻿namespace DataTransfer.Dtos.Products.Commands;
 
 public record CreateProductRequest(
     string Title,

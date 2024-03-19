@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Persistence;
+using Infrastructure;
 
 #nullable disable
 
-namespace Persistence.Migrations.Store
+namespace Infrastructure.Migrations.Store
 {
     [DbContext(typeof(StoreDbContext))]
     [Migration("20240319111137_Initial")]

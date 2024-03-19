@@ -1,18 +1,18 @@
 ﻿using Core.Domain.Clients.Models;
 using Core.Domain.Products.Models;
+using Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
-using Persistence.EntityConfigurations;
 
-namespace Persistence;
+namespace Infrastructure;
 
 public class StoreDbContext(DbContextOptions<StoreDbContext> options) : DbContext(options)
 {
     internal const string StoreDbSchema = "store";
     internal const string StoreDbMigrationsHistoryTable = "__StoreDbMigrationsHistory";
 
-    public DbSet<Client> Users { get; set; }
+    public DbSet<Client> Users { get; init; }
 
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; init; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

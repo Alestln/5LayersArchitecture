@@ -1,19 +1,12 @@
 ﻿using Core.Domain.Products.Data;
 using Core.Domain.Products.Models;
 using MediatR;
-using Persistence;
+using Infrastructure;
 
 namespace Application.Domain.Products.Commands.CreateProduct;
 
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
+public class CreateProductCommandHandler(StoreDbContext storeDbContext) : IRequestHandler<CreateProductCommand, Guid>
 {
-    private readonly StoreDbContext _storeDbContext;
-
-    public CreateProductCommandHandler(StoreDbContext storeDbContext)
-    {
-        _storeDbContext = storeDbContext;
-    }
-
     public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var data = new CreateProductData(
@@ -22,8 +15,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         var product = Product.Create(data);
 
-        _storeDbContext.Add(product);
-        await _storeDbContext.SaveChangesAsync(cancellationToken);
+        storeDbContext.Add(product);
+        await storeDbContext.SaveChangesAsync(cancellationToken);
         
         return product.Id;
     }

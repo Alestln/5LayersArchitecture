@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Dtos.Products;
+namespace DataTransfer.Dtos.Products;
 
 public class ProductDetailsDto
 {

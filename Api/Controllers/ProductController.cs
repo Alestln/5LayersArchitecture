@@ -7,8 +7,8 @@ using Application.Domain.Products.Queries.GetProductDetails;
 using Application.Domain.Products.Queries.GetProducts;
 using AutoMapper;
 using Core.Exceptions;
-using Infrastructure.Dtos.Products;
-using Infrastructure.Dtos.Products.Commands;
+using DataTransfer.Dtos.Products;
+using DataTransfer.Dtos.Products.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PagesResponses;
@@ -16,7 +16,7 @@ using PagesResponses;
 namespace Api.Controllers;
 
 [Route(Routes.Products)]
-public class ProductController(IMediator mediator) : ControllerBase
+public class ProductController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(PageResponse<ProductDto>), StatusCodes.Status200OK)]
@@ -60,7 +60,7 @@ public class ProductController(IMediator mediator) : ControllerBase
             return BadRequest();
         }
         
-        var command = new CreateProductCommand(request.Title, request.Price);
+        var command = mapper.Map<CreateProductCommand>(request);
         var productId = await mediator.Send(command, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, productId);
     }
@@ -80,7 +80,7 @@ public class ProductController(IMediator mediator) : ControllerBase
         
         try
         {
-            var command = new UpdateProductCommand(request.Id, request.Title, request.Price);
+            var command = mapper.Map<UpdateProductCommand>(request);
             await mediator.Send(command, cancellationToken);
             return NoContent();
         }

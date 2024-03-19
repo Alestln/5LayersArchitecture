@@ -1,4 +1,4 @@
-﻿using Infrastructure.Dtos.Products;
+﻿using DataTransfer.Dtos.Products;
 using MediatR;
 using PagesResponses;
 

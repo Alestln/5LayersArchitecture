@@ -1,6 +1,6 @@
 using Application;
+using DataTransfer;
 using Infrastructure;
-using Persistence;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api;
@@ -18,7 +18,6 @@ public class Program
 
         builder.Services.AddPersistenceServices(builder.Configuration);
         builder.Services.AddApplicationServices(builder.Configuration);
-        builder.Services.AddInfrastructureServices(builder.Configuration);
         
         var app = builder.Build();
 
