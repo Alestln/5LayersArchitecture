@@ -1,3 +1,4 @@
+using Api.Middlewares;
 using Application;
 using DataTransfer;
 using Infrastructure;
@@ -29,7 +30,9 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        
         app.MapControllers();
+        app.UseJsonHeader();
 
         app.Run();
     }
