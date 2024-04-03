@@ -15,6 +15,7 @@ using PagesResponses;
 
 namespace Api.Controllers;
 
+[ApiController]
 [Route(Routes.Products)]
 public class ProductController(IMediator mediator, IMapper mapper) : ControllerBase
 {
@@ -34,7 +35,7 @@ public class ProductController(IMediator mediator, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(
         [FromRoute] [Required] Guid id,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var query = new GetProductDetailsQuery(id);
         try
@@ -50,16 +51,10 @@ public class ProductController(IMediator mediator, IMapper mapper) : ControllerB
 
     [HttpPost]
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(
-        [FromBody] [Required] CreateProductRequest? request,
+        [FromBody] [Required] CreateProductRequest request,
         CancellationToken cancellationToken)
     {
-        if (request is null)
-        {
-            return BadRequest();
-        }
-        
         var command = mapper.Map<CreateProductCommand>(request);
         var productId = await mediator.Send(command, cancellationToken);
         return StatusCode(StatusCodes.Status201Created, productId);
@@ -67,17 +62,11 @@ public class ProductController(IMediator mediator, IMapper mapper) : ControllerB
 
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(
-        [FromBody] [Required] UpdateProductRequest? request,
-        CancellationToken cancellationToken = default)
+        [FromBody] [Required] UpdateProductRequest request,
+        CancellationToken cancellationToken)
     {
-        if (request is null || request.Id == Guid.Empty)
-        {
-            return BadRequest();
-        }
-        
         try
         {
             var command = mapper.Map<UpdateProductCommand>(request);
