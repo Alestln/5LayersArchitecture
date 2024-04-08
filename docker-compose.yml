@@ -1,17 +1,27 @@
 ﻿services:
-  database:
-    image: 'postgres:latest'
-    environment:
-      USER:
-      PASSWORD:
-    volumes:
-      - db-data:/var/lib/postgresql/data/
-  
   api:
-    image: api
+    image: ${DOCKER_REGISTRY-}api
     build:
       context: .
       dockerfile: Api/Dockerfile
+    expose:
+      - "8081"
+      - "8080"
+    ports:
+      - "7255:8081"
+    depends_on:
+      - database
+  
+  database:
+    image: postgres:14.6-alpine
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    ports:
+      - "15432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
   
 volumes: 
   db-data:
